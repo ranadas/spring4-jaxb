@@ -1,0 +1,117 @@
+<wsdl:definitions name="AutoEntryOperationsPortService" targetNamespace="http://besl.hrblock.com/services/AutoEntryOperations" xmlns:ns1="http://besl.hrblock.com/types/autoimport" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://besl.hrblock.com/services/AutoEntryOperations" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <wsdl:types>
+      <xs:schema elementFormDefault="qualified" targetNamespace="http://besl.hrblock.com/types/besl" version="1.0" xmlns:tns="http://besl.hrblock.com/types/besl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:element name="TransactionHeader" type="tns:TransactionHeaderType"/>
+         <xs:complexType name="TransactionHeaderType">
+            <xs:sequence>
+               <xs:element minOccurs="0" name="UserId" type="xs:string"/>
+               <xs:element minOccurs="0" name="FirstName" type="xs:string"/>
+               <xs:element minOccurs="0" name="LastName" type="xs:string"/>
+               <xs:element minOccurs="0" name="ApplicationId" type="xs:int"/>
+               <xs:element minOccurs="0" name="SourceIPAddress" type="xs:string"/>
+               <xs:element minOccurs="0" name="LocationId" type="xs:string"/>
+               <xs:element minOccurs="0" name="ConsumerTransactionId" type="xs:string"/>
+               <xs:element minOccurs="0" name="GlobalTxUuid" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+      </xs:schema>
+      <xs:schema elementFormDefault="qualified" targetNamespace="http://besl.hrblock.com/types/autoimport" version="1.0" xmlns:tns="http://besl.hrblock.com/types/autoimport" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:element name="getOAuthCredentialsRequest" type="tns:GetOAuthCredentialsRequest"/>
+         <xs:element name="getOAuthCredentialsResponse" type="tns:GetOAuthCredentialsResponse"/>
+         <xs:complexType name="ServiceStatus">
+            <xs:sequence>
+               <xs:element name="ReturnSeverity" type="xs:string"/>
+               <xs:element name="ReturnCode" type="xs:string"/>
+               <xs:element minOccurs="0" name="ErrorDesc" type="xs:string"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:complexType name="GetOAuthCredentialsRequest">
+            <xs:sequence>
+               <xs:element name="RequestorIdentity" type="tns:RequestorIdentity"/>
+               <xs:element name="TaxFormRequest" type="tns:TaxFormRequest"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:complexType name="TaxFormRequest">
+            <xs:sequence>
+               <xs:element name="FormType" type="tns:FormType"/>
+               <xs:element maxOccurs="unbounded" minOccurs="0" name="OFXAuthParms" type="tns:OFXAuthParm"/>
+            </xs:sequence>
+         </xs:complexType>
+	<xs:complexType name="OFXAuthParm">
+	    <xs:sequence>
+		<xs:element name="Attr_Field_Name" type="xs:string"/>
+		<xs:element minOccurs="0" name="Attr_Display_Desc" type="xs:string"/>
+		<xs:element minOccurs="0" name="Attr_Value" type="xs:string"/>
+		<xs:element minOccurs="0" name="Attr_Value_Min_Len" type="xs:integer"/>
+		<xs:element minOccurs="0" name="Attr_Value_Max_Len" type="xs:integer"/>
+		<xs:element minOccurs="0" name="Attr_Value_Type" type="tns:ParmType"/>
+		<xs:element minOccurs="0" name="Attr_Value_Case" type="xs:boolean"/>
+		<xs:element minOccurs="0" name="Attr_Value_Spaces_Allowed" type="xs:boolean"/>
+		<xs:element minOccurs="0" name="Attr_Value_Special_Chars_Allowed" type="xs:boolean"/>
+		<xs:element minOccurs="0" name="Attr_Value_Clear_Text_Flag" type="xs:boolean"/>
+		<xs:element minOccurs="0" name="Attr_Value_Entry_Format" type="xs:string"/>
+	    </xs:sequence>
+	</xs:complexType>
+         <xs:complexType name="GetOAuthCredentialsResponse">
+            <xs:sequence>
+               <xs:element name="ServiceStatus" type="tns:ServiceStatus"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:complexType name="RequestorIdentityType">
+            <xs:sequence>
+               <xs:element name="AppId" type="tns:AppId"/>
+            </xs:sequence>
+         </xs:complexType>
+         <xs:simpleType name="AppId">
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="TCS"/>
+               <xs:enumeration value="TCO"/>
+               <xs:enumeration value="HRB"/>
+               <xs:enumeration value="MBTO"/>
+               <xs:enumeration value="VENDOR"/>
+            </xs:restriction>
+         </xs:simpleType>
+         <xs:simpleType name="FormType">
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="W2"/>
+               <xs:enumeration value="1099"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:schema>
+      <xs:schema targetNamespace="http://besl.hrblock.com/services/AutoEntryOperations" version="1.0" xmlns:ns1="http://besl.hrblock.com/types/besl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <xs:import namespace="http://besl.hrblock.com/types/besl"/>
+         <xs:element name="TransactionHeader" type="ns1:TransactionHeaderType"/>
+      </xs:schema>
+   </wsdl:types>
+   <wsdl:message name="GetOAuthCredentialsResponse">
+      <wsdl:part element="ns1:getOAuthCredentialsResponse" name="parameters"></wsdl:part>
+   </wsdl:message>
+   <wsdl:message name="GetOAuthCredentials">
+      <wsdl:part element="tns:TransactionHeader" name="header"></wsdl:part>
+      <wsdl:part element="ns1:getOAuthCredentialsRequest" name="parameters"></wsdl:part>
+   </wsdl:message>
+   <wsdl:portType name="AutoEntryOperationsPort">
+      <wsdl:operation name="GetOAuthCredentials">
+         <wsdl:input message="tns:GetOAuthCredentials" name="GetOAuthCredentials"></wsdl:input>
+         <wsdl:output message="tns:GetOAuthCredentialsResponse" name="GetOAuthCredentialsResponse"></wsdl:output>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="AutoEntryOperationsPortServiceSoapBinding" type="tns:AutoEntryOperationsPort">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="GetOAuthCredentials">
+         <soap:operation soapAction="http://besl.hrblock.net/AutoEntryOperations/GetOAuthCredentials" style="document"/>
+         <wsdl:input name="GetOAuthCredentials">
+            <soap:header message="tns:GetOAuthCredentials" part="header" use="literal"></soap:header>
+            <soap:body parts="parameters" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="GetOAuthCredentialsResponse">
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="AutoEntryOperationsPortService">
+      <wsdl:port binding="tns:AutoEntryOperationsPortServiceSoapBinding" name="HTTPAutoEntryOperationsPort">
+         <soap:address location="http://localhost:9091/AutoEntryOperations"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>
